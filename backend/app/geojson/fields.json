@@ -1,0 +1,41 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "field_1",
+                "name": "North Field",
+                "crop": "Corn",
+                "area": "120 acres"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -122.42,
+                            37.78
+                        ],
+                        [
+                            -122.42,
+                            37.79
+                        ],
+                        [
+                            -122.41,
+                            37.79
+                        ],
+                        [
+                            -122.41,
+                            37.78
+                        ],
+                        [
+                            -122.42,
+                            37.78
+                        ]
+                    ]
+                ]
+            }
+        }
+    ]
+}

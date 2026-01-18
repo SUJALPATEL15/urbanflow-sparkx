@@ -1,0 +1,50 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Central Public School",
+                "type": "School",
+                "occupancy": 92
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    72.5714,
+                    23.0225
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "City Engineering College",
+                "type": "College",
+                "occupancy": 88
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    72.58,
+                    23.028
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "North Zone Primary School",
+                "type": "School",
+                "occupancy": 75
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    72.565,
+                    23.03
+                ]
+            }
+        }
+    ]
+}

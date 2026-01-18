@@ -1,0 +1,35 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "zone": "A-1",
+                "moisture": 78,
+                "status": "Optimal"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    72.5714,
+                    23.0225
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "zone": "A-2",
+                "moisture": 42,
+                "status": "Irrigation Required"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    72.565,
+                    23.018
+                ]
+            }
+        }
+    ]
+}
