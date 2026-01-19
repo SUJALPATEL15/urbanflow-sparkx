@@ -1,106 +1,30 @@
-import json
-from pathlib import Path
+from app.services.agriculture_yield import get_yield_forecast
+from app.services.soil_health import get_soil_health
+from app.services.field_moisture import get_field_moisture  # Note: logic moved to fields_geojson mostly, but keeping for reference if needed, or we use geojson service
+from app.services.geojson_service import get_fields_geojson
+from app.services.water_source import get_water_source
+from app.services.devices import get_devices
 
-BASE_PATH = Path("app/geojson")
+async def get_agriculture_overview():
+    # Fetch all data in parallel logically (or sequentially for simplicity first)
+    # Mock weather/soil data for yield forecast input
+    soil_input = {"nitrogen": 50, "phosphorus": 30, "potassium": 40}
+    weather_input = {"temp": 25.0, "humidity": 60.0}
 
-def get_crop_yield_forecast():
-    return [
-        {"month": "Jan", "yield": 4200},
-        {"month": "Feb", "yield": 3800},
-        {"month": "Mar", "yield": 9800},
-        {"month": "Apr", "yield": 4200},
-        {"month": "May", "yield": 4800},
-        {"month": "Jun", "yield": 3900},
-        {"month": "Jul", "yield": 4400}
-    ]
-
-
-def get_soil_health():
-    return {
-        "nitrogen": 78,
-        "phosphorus": 65,
-        "potassium": 82,
-        "recommendations": {
-            "nitrogen": "Adequate",
-            "phosphorus": "Low – Add fertilizer",
-            "potassium": "Optimal"
-        }
-    }
-
-
-def get_water_source():
-    return {
-        "rainwater": {
-            "value": 62,
-            "unit": "%"
-        },
-        "municipal": {
-            "value": 38,
-            "unit": "%"
-        }
-    }
-
-
-def get_connected_devices():
-    return [
-        {
-            "device": "Smart Irrigation",
-            "zone": "A-4",
-            "status": "Active",
-            "impact": "Water saved: 12%"
-        },
-        {
-            "device": "Drone Fleet",
-            "count": "2 / 5",
-            "status": "Charging",
-            "impact": "Crop area monitored: 180 ha"
-        },
-        {
-            "device": "Greenhouse Temperature",
-            "value": "24°C",
-            "status": "Optimal"
-        }
-    ]
-
-
-def get_field_moisture_map():
-    try:
-        with open(BASE_PATH / "field_moisture.json") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"error": "GeoJSON file not found"}
-
-
-def get_agriculture_index(soil, water):
-    score = 100
-
-    if soil["phosphorus"] < 70:
-        score -= 15
-
-    if water["rainwater"]["value"] < 50:
-        score -= 10
-
-    return max(score, 0)
-
-
-def get_advisories():
-    return [
-        "Irrigation recommended in Zone A-2",
-        "Heat stress risk in next 48 hours",
-        "Optimal sowing window approaching"
-    ]
-
-
-def get_agriculture_overview():
-    soil = get_soil_health()
-    water = get_water_source()
+    crop_yield = await get_yield_forecast(soil_input, weather_input)
+    soil = await get_soil_health()
+    # Frontend expects "field_moisture_map" which seems to correspond to the geojson
+    field_map = await get_fields_geojson()
+    water = await get_water_source()
+    devices = await get_devices()
 
     return {
-        "crop_yield_forecast": get_crop_yield_forecast(),
+        "crop_yield_forecast": crop_yield,
         "soil_health": soil,
-        "field_moisture_map": get_field_moisture_map(),
+        "field_moisture_map": field_map,
         "water_source": water,
-        "connected_devices": get_connected_devices(),
-        "agriculture_index": get_agriculture_index(soil, water),
-        "advisories": get_advisories()
+        "connected_devices": devices
     }
+
+async def predict_yield(soil_data: dict, weather_data: dict):
+    return await get_yield_forecast(soil_data, weather_data)
